@@ -1,0 +1,12 @@
+{% extends "links/link_list.html" %}
+{% block title %}Browse Links{% endblock %} 
+
+{% block categories %}
+  <ul class="nav nav-list"> 
+    <li class="nav-header">Categories</li> 
+    <!--<li class="active"><a href="#">Link</a></li> -->
+    {% for category in categories %}
+      <li><a href="{% url mylinks %}category/{{category.slug}}">{{category.name}}</a></li>
+    {% endfor %}
+  </ul><!--/.nav-->
+{% endblock %}

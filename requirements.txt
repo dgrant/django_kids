@@ -1,0 +1,6 @@
+Django==1.4.3
+mysql-python==1.2.4
+South==0.7.6
+django-htmlmin==0.6
+PyHamcrest==1.7.1
+uwsgi==1.9.11

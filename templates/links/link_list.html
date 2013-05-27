@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="container-fluid"> 
+    <div class="row-fluid"> 
+
+        <!-- START categories -->
+        <div class="span3"> 
+          <div class="well sidebar-nav"> 
+              {% block categories %}{% endblock %}
+          </div><!--/.well --> 
+        </div><!--/span-->
+        <!-- END categories -->
+
+        <div class="span9">
+          <div class="hero-unit">
+            <h1><a href="/">Alexandra's Stuff!</a></h1>
+            <p>This site contains all sorts of stuff for Alexandra to see, hear, watch, and learn...</p>
+          </div> <!-- hero-unit -->
+
+          <div class="row-fluid">
+
+              <!-- START paginator -->
+              <div class="span12">
+                  {% if paginator.num_pages != 1 %}
+                  <div class="pagination pagination-centered">
+                      <ul>
+                          {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+                          {% else %}
+                            <li class="disabled"><a href="">Prev</a>
+                          {% endif %}
+
+                          {% for page_num in paginator.page_range %}
+                          {% if page_num == page_obj.number %}
+                            <li class="active">
+                          {% else %}
+                            <li>
+                          {% endif %}
+                            <a href="?page={{ page_num }}">{{ page_num }}</a>
+                          </li>
+                          {% endfor %}
+
+                          {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">Next</a>
+                          {% else %}
+                            <li class="disabled"><a href="">Next</a>
+                          {% endif %}
+                          </li>
+                      </ul>
+                  </div> <!-- pagination pagination-centered -->
+                  {% endif %}
+              </div> <!-- span -->
+              <!-- END paginator -->
+
+              <!-- START new link button -->
+                <div class="row-fluid">
+                  <div class="span12">
+                      <a class="btn" href="{% url link_add %}">Add New Link</a>
+                  </div>
+                </div>
+              <!-- END new link button -->
+
+              <!-- START videos --->
+              {% for link in object_list %}
+              {% if forloop.counter0|divisibleby:"2" %}
+                <div class="row-fluid">
+                  <ul class="thumbnails">
+              {% endif %}
+                    <li class="span6">
+                      <div class="thumbnail">
+                        <h2><a href="{{ link.get_url }}">{{ link.title }}</a></h2>
+                        <p>{{ link.text }}</p>
+                {% if link.has_thumbnail %}
+                <p><a href="{{ link.get_url }}"><img width="100%" src="{{ link.thumbnail_url }}" class="img-rounded" /></a></p>
+                {% endif %} 
+                        <p><em>Added {{ link.ctime|timesince }} ago in {% for category in link.category.all %} {{category.name}}{% if forloop.last %}{% else %},{% endif %} {% endfor %}
+                        </em></p>
+                        <p>Created by: {{ link.creator }}</p>
+                    </div> <!-- thumbnail -->
+                    </li> <!-- span -->
+              {% if forloop.last or forloop.counter|divisibleby:"2" %}
+                 </ul> <!-- thumbnails -->
+               </div> <!-- row-fluid -->
+              {% endif %}
+
+              {% endfor %}
+              <!-- END videos -->
+
+          </div> <!-- row-fluid -->
+      </div> <!-- span9 -->
+
+          <hr>
+
+          <footer>
+            <p>&copy; David Grant 2012</p>
+          </footer>
+
+    </div><!--/.fluid-container-->
+{% endblock %}
