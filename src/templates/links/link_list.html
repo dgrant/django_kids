@@ -15,8 +15,8 @@
 
         <div class="span9">
           <div class="hero-unit">
-            <h1><a href="/">Alexandra's Stuff!</a></h1>
-            <p>This site contains all sorts of stuff for Alexandra to see, hear, watch, and learn...</p>
+              <h1><a href="/">{% block heading %}{% endblock %}</a></h1>
+              <p>{% block subheading %}{% endblock %}
           </div> <!-- hero-unit -->
 
           <div class="row-fluid">
@@ -55,12 +55,14 @@
               <!-- END paginator -->
 
               <!-- START new link button -->
+              {% if user.is_authenticated %}
                 <div class="row-fluid">
                   <div class="span12">
                       <a class="btn" href="{% url link_add %}">Add New Link</a>
                   </div>
                 </div>
               <!-- END new link button -->
+              {% endif %}
 
               <!-- START videos --->
               {% for link in object_list %}

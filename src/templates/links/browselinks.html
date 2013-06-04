@@ -1,5 +1,13 @@
 {% extends "links/link_list.html" %}
 {% block title %}Browse Links{% endblock %} 
+{% block heading %}Kids Stuff{% endblock %}
+{% block subheading %}
+{% if user.is_authenticated %}
+Check out all the videos that have been uploaded by other users!
+{% else %}
+Check out all the videos that have been added by our users!<br />To add your own links of your own (including videos you want kept private), please register (coming soon!).
+{% endif %}
+{% endblock %}
 
   {% block categories %}
             <ul class="nav nav-list"> 

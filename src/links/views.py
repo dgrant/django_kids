@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, TemplateView
 from django.views.generic.edit import ModelFormMixin
 from django.db.models import Q
 
@@ -74,19 +74,31 @@ class LinkList(ListView):
         context['categories'] = Category.objects.all().order_by('name')
         return context
 
+class Home(TemplateView):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            # User is authenticated so redirect to LinkList
+            view = LinkList.as_view()
+            return view(request, *args, **kwargs)
+        else:
+            # User is not authenticated so redirect to Browse view
+            view = Browse.as_view()
+            return view(request, *args, **kwargs)
+
 class Browse(ListView):
     model = Link
     paginate_by = 100
     template_name = 'links/browselinks.html'
 
-#    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(Browse, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
+            # Authenticated, redirect to LinkList view
             qs = Link.objects.exclude(user=self.request.user).exclude(private=True)
         else:
+            # Not authenticated, show all links except private ones
             qs = Link.objects.exclude(private=True)
         if self.kwargs.has_key('category_slug'):
             category_slug = self.kwargs['category_slug']
