@@ -2,7 +2,6 @@
 
 {% block content %}
 
-  <div class="container-fluid"> 
     <div class="row-fluid"> 
 
         <!-- START categories -->
@@ -90,14 +89,42 @@
               {% endfor %}
               <!-- END videos -->
 
+              <!-- START paginator -->
+              <div class="span12">
+                  {% if paginator.num_pages != 1 %}
+                  <div class="pagination pagination-centered">
+                      <ul>
+                          {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+                          {% else %}
+                            <li class="disabled"><a href="">Prev</a>
+                          {% endif %}
+
+                          {% for page_num in paginator.page_range %}
+                          {% if page_num == page_obj.number %}
+                            <li class="active">
+                          {% else %}
+                            <li>
+                          {% endif %}
+                            <a href="?page={{ page_num }}">{{ page_num }}</a>
+                          </li>
+                          {% endfor %}
+
+                          {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">Next</a>
+                          {% else %}
+                            <li class="disabled"><a href="">Next</a>
+                          {% endif %}
+                          </li>
+                      </ul>
+                  </div> <!-- pagination pagination-centered -->
+                  {% endif %}
+              </div> <!-- span -->
+              <!-- END paginator -->
+
+
           </div> <!-- row-fluid -->
       </div> <!-- span9 -->
 
-          <hr>
 
-          <footer>
-            <p>&copy; David Grant 2012</p>
-          </footer>
-
-    </div><!--/.fluid-container-->
 {% endblock %}

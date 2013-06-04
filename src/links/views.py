@@ -87,7 +87,7 @@ class Home(TemplateView):
 
 class Browse(ListView):
     model = Link
-    paginate_by = 100
+    paginate_by = 20
     template_name = 'links/browselinks.html'
 
     def dispatch(self, *args, **kwargs):

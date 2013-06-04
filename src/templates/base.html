@@ -89,7 +89,13 @@
       </div> 
     </div> 
 
-    {% block content %}{% endblock %}
+    <div class="container-fluid"> 
+      {% block content %}{% endblock %}
+
+      <footer>
+        <p>&copy; David Grant 2012-2013</p> 
+      </footer>
+    </div>
 
         <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
         <script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
