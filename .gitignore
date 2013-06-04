@@ -2,4 +2,4 @@ local_settings.py
 *.pyc
 env
 static
-django-kids.pid
+django_kids.pid
