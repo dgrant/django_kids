@@ -72,15 +72,15 @@
           <a class="brand" href="/">Kid Stuff</a> 
           <div class="nav-collapse collapse"> 
             <ul class="nav"> 
-                <li><a href="{% url mylinks %}">My Links</a></li> 
-                <li><a href="{% url browse %}">Browse</a></li>
+                <li><a href="{% url "mylinks" %}">My Links</a></li> 
+                <li><a href="{% url "browse" %}">Browse</a></li>
             </ul> 
             <div class="pull-right">
               <ul class="nav">
                   {% if user.is_authenticated %}
-                  <li><a href="{% url django.contrib.auth.views.logout %}">Logout {{ user.username }}</a></li>
+                  <li><a href="{% url "django.contrib.auth.views.logout" %}">Logout {{ user.username }}</a></li>
                   {% else %}
-                  <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
+                  <li><a href="{% url "django.contrib.auth.views.login" %}">Login</a></li>
                   {% endif %}
               </ul>
             </div>

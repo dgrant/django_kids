@@ -47,7 +47,7 @@
       <p>Your username and password didn't match. Please try again.</p>
       {% endif %}
 
-      <form class="form-signin" method="post" action="{% url django.contrib.auth.views.login %}">
+      <form class="form-signin" method="post" action="{% url "django.contrib.auth.views.login" %}">
         {% csrf_token %}
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="text" class="input-block-level" name="username" id="id_username" placeholder="Username"/>

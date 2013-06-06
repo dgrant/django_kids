@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'south',
     'links',
+    'registration',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -175,6 +176,7 @@ CACHES = {
 
 HTML_MINIFY = True
 LOGIN_REDIRECT_URL="/"
+ACCOUNT_ACTIVATION_DAYS=7
 
 try:
     from local_settings import *
