@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render
 from django.views.generic import ListView, CreateView, TemplateView
 from django.views.generic.edit import ModelFormMixin
 from django.db.models import Q
+from django.core.urlresolvers import reverse
 
 from .models import Link, Category
 from .forms import LinkForm
@@ -71,19 +72,17 @@ class LinkList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(LinkList, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all().order_by('name')
+        # User must be logged in to get here.
+        # Show only the categories for the links for the user that is logged in
+        context['categories'] = Category.objects.filter(link__user__id=self.request.user.id).order_by('name').distinct()
         return context
 
 class Home(TemplateView):
-    def dispatch(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            # User is authenticated so redirect to LinkList
-            view = LinkList.as_view()
-            return view(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse('mylinks'))
         else:
-            # User is not authenticated so redirect to Browse view
-            view = Browse.as_view()
-            return view(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse('browse'))
 
 class Browse(ListView):
     model = Link
@@ -95,7 +94,7 @@ class Browse(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
-            # Authenticated, redirect to LinkList view
+            # Authenticated, show only other people's not-private links
             qs = Link.objects.exclude(user=self.request.user).exclude(private=True)
         else:
             # Not authenticated, show all links except private ones
@@ -107,6 +106,12 @@ class Browse(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(Browse, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all().order_by('name')
+        if self.request.user.is_authenticated():
+            # Authenticated, show all categories for videos that aren't my own and aren't private
+            context['categories'] = Category.objects.exclude(link__private=True).exclude(link__user__id=self.request.user.id).order_by('name')
+        else:
+            # Not authenticated, show all categories except ones that are
+            # confined to private links
+            context['categories'] = Category.objects.exclude(link__private=True).order_by('name')
         return context
 
