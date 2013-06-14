@@ -11,6 +11,10 @@ ADMINS = (
     ('David Grant', 'davidgrant@gmail.com'),
 )
 
+ALLOWED_HOSTS = [
+            'kids.davidgrant.ca',
+            ]
+
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
