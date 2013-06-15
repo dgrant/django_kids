@@ -12,8 +12,11 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+#    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+
+    # This is the 2-step authentication backend
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()

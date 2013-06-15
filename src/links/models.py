@@ -5,7 +5,6 @@ import json
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils import unittest
-from hamcrest import *
 
 thumbnail_url_cache = {}
 
@@ -75,19 +74,4 @@ class Link(models.Model):
 
     class Meta:
         ordering = ['-ctime']
-
-
-class LinkTestCase(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def has_thumbnail(self):
-        link1 = Link(media_type='youtube')
-        assert_that(link1.has_thumbnail(), is_(True))
-
-        link2 = Link(media_type='vimeo')
-        assert_that(link2.has_thumbnail(), is_(True))
-
-        link3 = Link(media_type='url')
-        assert_that(link3.has_thumbnail(), is_(False))
 
