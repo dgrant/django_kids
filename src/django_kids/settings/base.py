@@ -2,7 +2,10 @@
 
 import os
 
-ROOT = os.path.abspath(os.path.split(__file__)[0])
+from os.path import join, abspath, dirname
+here = lambda *x: join(abspath(dirname(__file__)), *x)
+PROJECT_ROOT = here("..", "..")
+root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -45,7 +48,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = root('media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -56,7 +59,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.abspath(os.path.join(ROOT, '..', '..', 'static'))
+STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, '..', 'static'))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -118,10 +121,10 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.abspath(os.path.join(ROOT, '..', 'templates'))
+    root('templates')
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -136,7 +139,7 @@ INSTALLED_APPS = (
     'south',
     'links',
     'registration',
-)
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -182,8 +185,8 @@ HTML_MINIFY = True
 LOGIN_REDIRECT_URL="/"
 ACCOUNT_ACTIVATION_DAYS=7
 
-try:
-    from local_settings import *
-except Exception, e:
-    print "No local_settings"
-    print e
+if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar',)
+    INTERNAL_IPS = ("127.0.0.1",)
+    MIDDLEWARE_CLASSES += \
+                    ("debug_toolbar.middleware.DebugToolbarMiddleware", )

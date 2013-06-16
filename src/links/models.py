@@ -56,7 +56,7 @@ class Link(models.Model):
         return self.media_type == 'youtube' or self.media_type == 'vimeo'
 
     def save(self, *args, **kwargs):
-        # set the thumbnail
+        """ set the thumbnail """
         if self.media_type == 'youtube' or self.media_type == 'vimeo':
             if self.media_type == 'youtube':
                 self.thumbnail_url = 'http://img.youtube.com/vi/{0}/0.jpg'.format(self.media_id)

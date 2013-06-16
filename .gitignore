@@ -4,3 +4,4 @@ env
 env.bak
 static
 django_kids.pid
+.coverage
