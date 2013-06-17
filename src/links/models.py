@@ -31,6 +31,13 @@ LINK_MEDIA_TYPE_CHOICES = (
                            ('url', 'URL'),
                           )
 
+class LinkManager(models.Manager):
+
+    def not_owned_by(self, user):
+        return self.exclude(user=user)
+
+    def public(self):
+        return self.exclude(private=True)
 
 class Link(models.Model):
     title = models.CharField(max_length=100)
@@ -43,6 +50,8 @@ class Link(models.Model):
     user = models.ForeignKey(User)
     thumbnail_url = models.CharField(max_length=256, null=True, blank=True)
     private = models.BooleanField()
+
+    objects = LinkManager()
 
     def __unicode__(self):
         return self.title
@@ -70,4 +79,5 @@ class Link(models.Model):
 
     class Meta:
         ordering = ['-ctime']
+
 

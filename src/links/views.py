@@ -88,6 +88,7 @@ class Browse(ListView):
     model = Link
     paginate_by = 20
     template_name = 'links/browselinks.html'
+    context_object_name = 'link_list'
 
     def dispatch(self, *args, **kwargs):
         return super(Browse, self).dispatch(*args, **kwargs)
@@ -95,10 +96,10 @@ class Browse(ListView):
     def get_queryset(self):
         if self.request.user.is_authenticated():
             # Authenticated, show only other people's not-private links
-            qs = Link.objects.exclude(user=self.request.user).exclude(private=True)
+            qs = Link.objects.public().not_owned_by(self.request.user)
         else:
             # Not authenticated, show all links except private ones
-            qs = Link.objects.exclude(private=True)
+            qs = Link.objects.public()
         if self.kwargs.has_key('category_slug'):
             category_slug = self.kwargs['category_slug']
             qs = qs.filter(category__slug=category_slug)
