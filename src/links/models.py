@@ -1,6 +1,9 @@
 from django.db import models
 import urllib2
+from urllib2 import HTTPError
 import json
+
+from common import thumbnail
 
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -59,16 +62,9 @@ class Link(models.Model):
         """ set the thumbnail """
         if self.media_type == 'youtube' or self.media_type == 'vimeo':
             if self.media_type == 'youtube':
-                self.thumbnail_url = 'http://img.youtube.com/vi/{0}/0.jpg'.format(self.media_id)
+                self.thumbnail_url = thumbnail.get_youtube_thumbnail(self.media_id)
             elif self.media_type == 'vimeo':
-                url = 'http://vimeo.com/api/v2/video/{0}.json'.format(self.media_id)
-                try:
-                    openurl = urllib2.urlopen(url)
-                except:
-                    print "Failed to fetch url: {0}".format(url)
-                    self.thumbnail_url = ''
-                else:
-                    self.thumbnail_url = json.loads(openurl.read())[0]['thumbnail_large']
+                self.thumbnail_url = thumbnail.get_vimeo_thumbnail(self.media_id)
         super(Link, self).save(*args, **kwargs)
 
 

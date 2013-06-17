@@ -6,3 +6,4 @@ coverage==3.6
 django-discover-runner==1.0
 model_mommy==1.0
 django-debug-toolbar==0.9.4
+mock==1.0.1
