@@ -5,4 +5,4 @@ python:
 # install dependencies
 install: "pip install -r requirements.txt --use-mirrors"
 # run tests
-script: manage.py test --settings=django_kids.settings.test
+script: ./ci_test.sh
