@@ -96,7 +96,7 @@ class Browse(ListView):
     def get_queryset(self):
         if self.request.user.is_authenticated():
             # Authenticated, show only other people's not-private links
-            qs = Link.objects.public().not_owned_by(self.request.user)
+            qs = Link.objects.public_not_owned_by(self.request.user)
         else:
             # Not authenticated, show all links except private ones
             qs = Link.objects.public()
