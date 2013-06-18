@@ -78,7 +78,7 @@
                 {% endif %} 
                         <p><em>Added {{ link.ctime|timesince }} ago in {% for category in link.category.all %} {{category.name}}{% if forloop.last %}{% else %},{% endif %} {% endfor %}
                         </em></p>
-                        <p>Created by: {{ link.creator }}</p>
+                        <p>Created by: {{ link.user }}</p>
                     </div> <!-- thumbnail -->
                     </li> <!-- span -->
               {% if forloop.last or forloop.counter|divisibleby:"2" %}
