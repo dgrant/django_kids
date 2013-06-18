@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^mylinks/add/$', LinkAdd.as_view(), name='link_add'),
 
     url(r'^browse/$', Browse.as_view(), name='browse'),
-    url(r'^browse/category/(?P<category_slug>\S+)/$', Browse.as_view()),
+    url(r'^browse/category/(?P<category_slug>\S+)/$', Browse.as_view(), name='browse_category'),
 )
