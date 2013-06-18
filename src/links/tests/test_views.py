@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 from model_mommy import mommy
 
+from links.models import Category
+
 class TestBrowse(TestCase):
 
     def setUp(self):
@@ -24,18 +26,25 @@ class TestBrowse(TestCase):
                           set([1, 3]))
 
     def test_category_filter(self):
-        mommy.make('Link', private=False) #1
-        mommy.make('Link', private=False) #2
+        link1 = mommy.make('Link', private=False) #1
+        cat1 = mommy.make('Category')
+        link1.category.add(cat1)
+        link1.save()
+
+        link2 = mommy.make('Link', private=True) #2
+        link2.category.add(cat1)
+        link2.save()
+
         mommy.make('Link', private=False) #3
 
-        url = reverse('browse')
+        url = reverse('browse_category', kwargs={'category_slug': cat1.slug})
         resp = self.client.get(url)
         self.assertEquals(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
 
         self.assertEquals(set([link.pk for link in resp.context['link_list']]),
-                          set([1, 3]))
+                          set([1]))
 
 
     def test_auth(self):
