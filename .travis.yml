@@ -1,8 +1,12 @@
 language: python
 python:
   - "2.7"
-  - "2.6"
-# install dependencies
-install: "pip install -r requirements.txt --use-mirrors"
-# run tests
-script: ./ci_test.sh
+install:
+  - pip install -r requirements.txt --use-mirrors
+  - pip install coveralls --use-mirrors
+script:
+  - cd src
+  - coverage run ./manage.py test --settings=django_kids.settings.test
+  - cd ..
+after_success:
+  - coveralls
