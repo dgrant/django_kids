@@ -16,3 +16,4 @@ DATABASES = {
   },
 }
 
+INSTALLED_APPS += ('discover_runner',)
