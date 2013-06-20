@@ -34,10 +34,10 @@ LINK_MEDIA_TYPE_CHOICES = (
 class LinkManager(models.Manager):
 
     def public_not_owned_by(self, user):
-        return self.exclude(user=user).exclude(private=True)
+        return self.exclude(user=user).exclude(private=True).prefetch_related('category')
 
     def public(self):
-        return self.exclude(private=True)
+        return self.select_related().exclude(private=True).prefetch_related('category')
 
 class Link(models.Model):
     title = models.CharField(max_length=100)
