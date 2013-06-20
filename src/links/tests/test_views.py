@@ -85,3 +85,30 @@ class TestMyLinks(TestCase):
         self.assertEquals(set([link.pk for link in resp.context['link_list']]),
                           set([1, 2]))
 
+    def test_linklist_auth_category_filtering(self):
+        authuser = User.objects.create_user('test', password='test')
+        ret = self.client.login(username='test', password='test')
+        self.assertTrue(ret)
+
+        link1 = mommy.make('Link', private=False, user=authuser) #1
+        cat1 = mommy.make('Category')
+        link1.category.add(cat1)
+        link1.save()
+
+        mommy.make('Link', private=True, user=authuser)  #2
+
+        mommy.make('Link', private=False) #3
+
+        link4 = mommy.make('Link', private=True) #4
+        link4.category.add(cat1)
+        link4.save()
+
+        url = reverse('mylinks_category', kwargs={'category_slug': cat1.slug})
+
+        resp = self.client.get(url)
+        self.assertEquals(resp.status_code, 200)
+        self.assertIn('categories', resp.context)
+        self.assertIn('link_list', resp.context)
+        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+                          set([1]))
+
