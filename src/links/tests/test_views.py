@@ -112,3 +112,24 @@ class TestMyLinks(TestCase):
         self.assertEquals(set([link.pk for link in resp.context['link_list']]),
                           set([1]))
 
+    def test_linklist_noauth(self):
+        """ should get re-directed to login page at /accounts/login """
+        url = reverse('mylinks')
+        resp = self.client.get(url)
+        self.assertRedirects(resp, 'http://testserver/accounts/login/?next=/links/mylinks/')
+
+
+class TestHome(TestCase):
+    def test_auth_redirect_to_mylinks(self):
+        authuser = User.objects.create_user('test', password='test')
+        ret = self.client.login(username='test', password='test')
+        self.assertTrue(ret)
+        url = reverse('home')
+        resp = self.client.get(url)
+        self.assertRedirects(resp, 'http://testserver/links/mylinks/')
+
+    def test_noauth_redirect_to_mylinks(self):
+        url = reverse('home')
+        resp = self.client.get(url)
+        self.assertRedirects(resp, 'http://testserver/links/browse/')
+
