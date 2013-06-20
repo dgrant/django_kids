@@ -133,3 +133,14 @@ class TestHome(TestCase):
         resp = self.client.get(url)
         self.assertRedirects(resp, 'http://testserver/links/browse/')
 
+
+class TestLinkAdd(TestCase):
+    def test_auth(self):
+        authuser = User.objects.create_user('test', password='test')
+        ret = self.client.login(username='test', password='test')
+        self.assertTrue(ret)
+
+        url = reverse('link_add')
+        resp = self.client.get(url)
+        self.assertEquals(resp.status_code, 200)
+
