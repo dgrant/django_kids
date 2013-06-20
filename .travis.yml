@@ -9,5 +9,6 @@ script:
   - coverage run ./manage.py test --settings=django_kids.settings.test
   - cd ..
   - mv src/.coverage ./.coverage
+  - mv src/.coveragerc ./.coveragerc
 after_success:
   - coveralls
