@@ -68,19 +68,35 @@ class TestMyLinks(TestCase):
         pass
     
     def test_linklist_auth(self):
+        # Auth
         authuser = User.objects.create_user('test', password='test')
         ret = self.client.login(username='test', password='test')
         self.assertTrue(ret)
 
-        mommy.make('Link', private=False, user=authuser) #1
-        mommy.make('Link', private=True, user=authuser)  #2
-        mommy.make('Link', private=False) #3
-        mommy.make('Link', private=True) #4
+        # DB setup
+        link1 = mommy.make('Link', private=False, user=authuser) #1
+        cat1 = mommy.make('Category')
+        link1.category.add(cat1)
+        link1.save()
 
+        mommy.make('Link', private=True, user=authuser)  #2
+
+        mommy.make('Link', private=False) #3
+
+        link4 = mommy.make('Link', private=True) #4
+        cat4 = mommy.make('Category')
+        link4.category.add(cat4)
+        link4.save()
+
+        # do GET
         url = reverse('mylinks')
         resp = self.client.get(url)
         self.assertEquals(resp.status_code, 200)
+
+        # Check the list of categories is correct
         self.assertIn('categories', resp.context)
+        self.assertEquals([cat1.name], [c.name for c in resp.context['categories']])
+        # Check the list of links is correct
         self.assertIn('link_list', resp.context)
         self.assertEquals(set([link.pk for link in resp.context['link_list']]),
                           set([1, 2]))
