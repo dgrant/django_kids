@@ -6,7 +6,7 @@ install:
   - pip install coveralls --use-mirrors
 script:
   - cd src
-  - coverage run --source=links ./manage.py test --settings=django_kids.settings.test
+  - coverage run ./manage.py test --settings=django_kids.settings.test
   - cd ..
   - mv src/.coverage ./.coverage
 after_success:
