@@ -13,7 +13,7 @@ class ThumbnailTest(TestCase):
         readurl_mock.return_value = '[{"thumbnail_large":"bogus_thumbnail_link"}]'
         self.assertEquals(thumbnail.get_vimeo_thumbnail('1234'), 'bogus_thumbnail_link')
 
-#    @patch('common.thumbnail.read_from_url')
-#    def test_get_vimeo_thumbnail_fail(self, readurl_mock):
-#        readurl_mock.side_effect = urllib2.HTTPError
-#        self.assertEquals(thumbnail.get_vimeo_thumbnail('1234'), '')
+    @patch('common.thumbnail.read_from_url')
+    def test_get_vimeo_thumbnail_fail(self, readurl_mock):
+        readurl_mock.side_effect = Exception("Failed")
+        self.assertEquals(thumbnail.get_vimeo_thumbnail('1234'), '')

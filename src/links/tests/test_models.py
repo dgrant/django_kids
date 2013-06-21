@@ -5,16 +5,19 @@ from model_mommy import mommy
 from mock import Mock, patch
 
 class CategoryTest(TestCase):
-    def setUp(self):
-        self.cat, _ = Category.objects.get_or_create(name='blah')
-
     def test_slug(self):
-        self.assertEquals(self.cat.slug, 'blah')
+        cat = mommy.make('Category', name='blah')
+        self.assertEquals(cat.slug, 'blah')
+
+    def test_unicode(self):
+        cat = mommy.make('Category')
+        self.assertEquals(unicode(cat), cat.name)
         
 
 class LinkTest(TestCase):
-    def setUp(self):
-        pass
+    def test_unicode(self):
+        link = mommy.make('Link')
+        self.assertEquals(unicode(link), link.title)
 
     @patch('common.thumbnail.get_youtube_thumbnail')
     def test_geturl_youtube(self, thumbnail_mock):
@@ -29,6 +32,10 @@ class LinkTest(TestCase):
         thumbnail_mock.return_value = FAKE_VIMEO_THUMB
         link = mommy.make(Link, media_type='vimeo', media_id='abcd')
         self.assertEquals(link.get_url(), 'http://vimeo.com/moogaloop.swf?clip_id=abcd')
+
+    def test_geturl_url(self):
+        link = mommy.make(Link, media_type='url')
+        self.assertEquals(link.get_url(), link.media_id)
 
     @patch('common.thumbnail.get_youtube_thumbnail')
     def test_thumbnail_youtube(self, thumbnail_mock):
