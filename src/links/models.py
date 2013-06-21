@@ -29,6 +29,9 @@ class Category(models.Model):
 
 class LinkManager(models.Manager):
 
+    def owned_by(self, user):
+        return self.select_related().filter(user=user).prefetch_related('category')
+
     def public_not_owned_by(self, user):
         return self.exclude(user=user).exclude(private=True).prefetch_related('category')
 

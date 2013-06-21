@@ -53,8 +53,7 @@ class LinkList(ListView):
         return super(LinkList, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        user = self.request.user
-        qs = user.link_set.all()
+        qs = Link.objects.owned_by(self.request.user)
         if self.kwargs.has_key('category_slug'):
             category_slug = self.kwargs['category_slug']
             qs = qs.filter(category__slug=category_slug)
