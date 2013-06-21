@@ -10,10 +10,12 @@ def get_youtube_thumbnail(id):
 def get_vimeo_thumbnail(id):
     url = 'http://vimeo.com/api/v2/video/{0}.json'.format(id)
     try:
-        openurl = urllib2.urlopen(url)
+        result = read_from_url(url)
     except HTTPError:
         print "Failed to fetch url: {0}".format(url)
         return ''
     else:
-        result = openurl.read()
         return json.loads(result)[0]['thumbnail_large']
+
+def read_from_url(url): # pragma: no cover
+    return urllib2.urlopen(url).read()

@@ -44,7 +44,7 @@ class Link(models.Model):
     text = models.TextField()
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, null=True, blank=True)
     media_type = models.CharField(max_length=50, default='youtube', choices=LINK_MEDIA_TYPE_CHOICES)
     media_id = models.CharField(max_length=100, default='')
     user = models.ForeignKey(User)

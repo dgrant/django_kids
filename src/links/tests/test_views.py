@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from model_mommy import mommy
 
-from links.models import Category
+from links.models import Category, Link
 
 class TestBrowse(TestCase):
 
@@ -151,12 +151,64 @@ class TestHome(TestCase):
 
 
 class TestLinkAdd(TestCase):
-    def test_auth(self):
+    def test(self):
         authuser = User.objects.create_user('test', password='test')
         ret = self.client.login(username='test', password='test')
         self.assertTrue(ret)
 
         url = reverse('link_add')
-        resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        resp = self.client.post(url, {'title': 'fake title',
+                                      'text': 'description',
+                                      'media_type': 'youtube',
+                                      'media_id': '12345',
+                                      'private': False})
+        self.assertEquals(resp.status_code, 302)
+        self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
+        self.assertEquals([1], [link.pk for link in Link.objects.all()])
 
+        link = Link.objects.get(pk=1)
+        self.assertEquals(Category.objects.all().count(), 0)
+        self.assertEquals(len(link.category.all()), 0)
+
+    def test_existing_cat(self):
+        authuser = User.objects.create_user('test', password='test')
+        ret = self.client.login(username='test', password='test')
+        self.assertTrue(ret)
+
+        cat = mommy.make('Category')
+
+        url = reverse('link_add')
+        resp = self.client.post(url, {'title': 'fake title',
+                                      'text': 'description',
+                                      'media_type': 'youtube',
+                                      'media_id': '12345',
+                                      'private': False,
+                                      'category': (cat.pk,)})
+        self.assertEquals(resp.status_code, 302)
+        self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
+        self.assertEquals([1], [link.pk for link in Link.objects.all()])
+
+        link = Link.objects.get(pk=1)
+        self.assertEquals(Category.objects.all().count(), 1)
+        self.assertEquals(len(link.category.all()), 1)
+
+    def test_new_cat(self):
+        authuser = User.objects.create_user('test', password='test')
+        ret = self.client.login(username='test', password='test')
+        self.assertTrue(ret)
+
+        url = reverse('link_add')
+        resp = self.client.post(url, {'title': 'fake title',
+                                      'text': 'description',
+                                      'media_type': 'youtube',
+                                      'media_id': '12345',
+                                      'private': False,
+                                      'new_categories': 'cat1, cat2'})
+        self.assertEquals(resp.status_code, 302)
+        self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
+        self.assertEquals([1], [link.pk for link in Link.objects.all()])
+
+        link = Link.objects.get(pk=1)
+
+        self.assertEquals(Category.objects.all().count(), 2)
+        self.assertEquals(len(link.category.all()), 2)

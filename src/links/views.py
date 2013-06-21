@@ -16,39 +16,31 @@ class LinkAdd(CreateView):
     form_class = LinkForm
     success_url = '/'
 
-    def get_form_kwargs(self):
-        kwargs = super(LinkAdd, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-
     def form_valid(self, form):
-        link = Link()
-        link.title = form.cleaned_data['title']
-        link.text = form.cleaned_data['text']
-        link.media_type = form.cleaned_data['media_type']
-        link.media_id = form.cleaned_data['media_id']
-        link.user = self.request.user
-        link.save()
-        self.object = link
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        form.save_m2m()
 
         new_categories = form.cleaned_data['new_categories']
-        new_categories = new_categories.strip().split(',')
-        for new_cat in new_categories:
-            cat = Category()
-            cat.name = new_cat
-            cat.save()
-            link.categories.add(cat) 
-            link.save()
-
-        for category in form.cleaned_data['category']:
-            cat = Category.objects.get(name=category)
-            link.categories.add(cat)
-            link.save()
+        new_categories = new_categories.strip()
+        if new_categories != '':
+            new_categories_list = new_categories.split(',')
+            cats = []
+            for new_cat in new_categories_list:
+                cat = Category()
+                cat.name = new_cat.strip()
+                cat.save()
+                cats.append(cat)
+            self.object.category.add(*cats) 
 
         return super(ModelFormMixin, self).form_valid(form)
 
+    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(LinkAdd, self).dispatch(*args, **kwargs)
+
+
 
 class LinkList(ListView):
     """
