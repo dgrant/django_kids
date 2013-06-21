@@ -36,6 +36,7 @@ class LinkTest(TestCase):
     def test_geturl_url(self):
         link = mommy.make(Link, media_type='url')
         self.assertEquals(link.get_url(), link.media_id)
+        self.assertFalse(link.has_thumbnail())
 
     @patch('common.thumbnail.get_youtube_thumbnail')
     def test_thumbnail_youtube(self, thumbnail_mock):

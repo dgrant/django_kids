@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 import urllib2
 from urllib2 import HTTPError
 
@@ -12,7 +16,7 @@ def get_vimeo_thumbnail(id):
     try:
         result = read_from_url(url)
     except Exception as e:
-        print e
+        logger.warning(str(e))
         return ''
     else:
         return json.loads(result)[0]['thumbnail_large']

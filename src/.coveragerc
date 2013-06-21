@@ -1,3 +1,4 @@
 [run]
 source = links,common
 omit = */migrations/*
+branch = True
