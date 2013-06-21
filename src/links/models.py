@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils import unittest
 
+from model_utils import Choices
+
 thumbnail_url_cache = {}
 
 class Category(models.Model):
@@ -25,12 +27,6 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
-LINK_MEDIA_TYPE_CHOICES = (
-                           ('youtube', 'YouTube'),
-                           ('vimeo', 'Vimeo'),
-                           ('url', 'URL'),
-                          )
-
 class LinkManager(models.Manager):
 
     def public_not_owned_by(self, user):
@@ -45,7 +41,11 @@ class Link(models.Model):
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
     category = models.ManyToManyField(Category, null=True, blank=True)
-    media_type = models.CharField(max_length=50, default='youtube', choices=LINK_MEDIA_TYPE_CHOICES)
+    MEDIA_TYPE = Choices(('youtube', 'YouTube'),
+                         ('vimeo', 'Vimeo'),
+                         ('url', 'URL'),
+                        )
+    media_type = models.CharField(max_length=50, default='youtube', choices=MEDIA_TYPE)
     media_id = models.CharField(max_length=100, default='')
     user = models.ForeignKey(User)
     thumbnail_url = models.CharField(max_length=256, null=True, blank=True)

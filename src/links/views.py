@@ -40,8 +40,6 @@ class LinkAdd(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(LinkAdd, self).dispatch(*args, **kwargs)
 
-
-
 class LinkList(ListView):
     """
     A list of a user's own links

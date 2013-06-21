@@ -58,3 +58,6 @@ class LinkTest(TestCase):
         link = mommy.make(Link, media_type='url')
         self.assertEquals(link.thumbnail_url, None)
         self.assertFalse(link.has_thumbnail())
+
+    def test_invalid_media_id(self):
+        link = mommy.make(Link, media_type='blather')
