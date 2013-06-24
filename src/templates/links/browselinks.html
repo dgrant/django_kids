@@ -13,7 +13,7 @@ Check out all the videos that have been added by our users!<br />To add your own
             <ul class="nav nav-list"> 
               <li class="nav-header">Categories</li> 
                 {% for category in categories %}
-                <li {% if request.path == category.get_browse_url %}class="active"{% endif %}><a href="{% url "browse_category" category_slug=category.slug %}">{{category.name}}</a></li>
+                <li{% if request.path == category.get_browse_url %} class="active"{% endif %}><a href="{% url "browse_category" category_slug=category.slug %}">{{category.name}}</a></li>
                 {% endfor %}
               </ul><!--/.nav-->
 
