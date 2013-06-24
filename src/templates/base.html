@@ -96,17 +96,22 @@
           <a class="brand" href="/">Kid Stuff</a> 
           <div class="nav-collapse collapse"> 
             <ul class="nav"> 
-                <li><a href="{% url "mylinks" %}">My Links</a></li> 
-                <li><a href="{% url "browse" %}">Browse</a></li>
-                 <li><a href="{% url "link_add" %}">Add Link</a></li>
+                {% url "mylinks" as mylinks %}
+                <li {% if request.path == mylinks %}class="active"{% endif %}><a href="{{ mylinks }}">My Links</a></li> 
+                {% url "browse" as browse %}
+                <li {% if request.path == browse %}class="active"{% endif %}><a href="{{ browse }}">Browse</a></li>
+                {% url "link_add" as link_add %}
+                <li {% if request.path == link_add %}class="active"{% endif %}><a href="{% url "link_add" %}">Add Link</a></li>
             </ul> 
             <div class="pull-right">
               <ul class="nav">
                   {% if user.is_authenticated %}
                   <li><a href="{% url "django.contrib.auth.views.logout" %}">Logout {{ user.username }}</a></li>
                   {% else %}
-                  <li><a href="{% url "django.contrib.auth.views.login" %}">Login</a></li>
-                  <li><a href="{% url "registration_register" %}">Register</a></li>
+                  {% url "django.contrib.auth.views.login" as login %}
+                  <li {% if request.path == login %}class="active"{% endif %}><a href="{{ login }}">Login</a></li>
+                  {% url "registration_register" as register %}
+                  <li {% if request.path == register %}class="active"{% endif %}><a href="{{ register }}">Register</a></li>
                   {% endif %}
               </ul>
             </div>
