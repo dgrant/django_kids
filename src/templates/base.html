@@ -1,3 +1,5 @@
+{% load links_extras %}
+
 <!DOCTYPE html> 
 <html lang="en"> 
   <head> 
@@ -97,11 +99,11 @@
           <div class="nav-collapse collapse"> 
             <ul class="nav"> 
                 {% url "mylinks" as mylinks %}
-                <li {% if request.path == mylinks %}class="active"{% endif %}><a href="{{ mylinks }}">My Links</a></li> 
+                <li {% if request.path|startswith:mylinks %}class="active"{% endif %}><a href="{{ mylinks }}">My Links</a></li> 
                 {% url "browse" as browse %}
-                <li {% if request.path == browse %}class="active"{% endif %}><a href="{{ browse }}">Browse</a></li>
+                <li {% if request.path|startswith:browse %}class="active"{% endif %}><a href="{{ browse }}">Browse</a></li>
                 {% url "link_add" as link_add %}
-                <li {% if request.path == link_add %}class="active"{% endif %}><a href="{% url "link_add" %}">Add Link</a></li>
+                <li {% if request.path|startswith:link_add %}class="active"{% endif %}><a href="{% url "link_add" %}">Add Link</a></li>
             </ul> 
             <div class="pull-right">
               <ul class="nav">
@@ -109,9 +111,9 @@
                   <li><a href="{% url "django.contrib.auth.views.logout" %}">Logout {{ user.username }}</a></li>
                   {% else %}
                   {% url "django.contrib.auth.views.login" as login %}
-                  <li {% if request.path == login %}class="active"{% endif %}><a href="{{ login }}">Login</a></li>
+                  <li {% if request.path|startswith:login %}class="active"{% endif %}><a href="{{ login }}">Login</a></li>
                   {% url "registration_register" as register %}
-                  <li {% if request.path == register %}class="active"{% endif %}><a href="{{ register }}">Register</a></li>
+                  <li {% if request.path|startswith:register %}class="active"{% endif %}><a href="{{ register }}">Register</a></li>
                   {% endif %}
               </ul>
             </div>
