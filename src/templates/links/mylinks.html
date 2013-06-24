@@ -9,7 +9,7 @@ Here are the links you have added!
   <ul class="nav nav-list"> 
     <li class="nav-header">Categories</li> 
     {% for category in categories %}
-      <li><a href="{% url "mylinks" %}category/{{category.slug}}">{{category.name}}</a></li>
+    <li {% if category.get_mylinks_url == request.path %}class="active"{% endif %}><a href="{% url "mylinks" %}category/{{category.slug}}">{{category.name}}</a></li>
     {% endfor %}
   </ul><!--/.nav-->
 {% endblock %}
