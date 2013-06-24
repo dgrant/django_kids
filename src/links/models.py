@@ -8,6 +8,7 @@ from common import thumbnail
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils import unittest
+from django.core.urlresolvers import reverse
 
 from model_utils import Choices
 
@@ -26,6 +27,13 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = 'Categories'
+
+    def get_browse_url(self):
+        return reverse('browse_category', kwargs={'category_slug': self.slug})
+
+    def get_mylinks_url(self):
+        return reverse('mylinks_category', kwargs={'category_slug': self.slug})
+
 
 class LinkManager(models.Manager):
 

@@ -1,6 +1,8 @@
 from django.test import TestCase
 from links.models import Category, Link
 
+from django.core.urlresolvers import reverse
+
 from model_mommy import mommy
 from mock import Mock, patch
 
@@ -12,7 +14,15 @@ class CategoryTest(TestCase):
     def test_unicode(self):
         cat = mommy.make('Category')
         self.assertEquals(unicode(cat), cat.name)
+
+    def test_get_browse_url(self):
+        cat = mommy.make('Category')
+        self.assertEquals(cat.get_browse_url(), reverse('browse_category', kwargs={'category_slug': cat.slug}))
         
+    def test_get_mylinks_url(self):
+        cat = mommy.make('Category')
+        self.assertEquals(cat.get_mylinks_url(), reverse('mylinks_category', kwargs={'category_slug': cat.slug}))
+
 
 class LinkTest(TestCase):
     def test_unicode(self):
