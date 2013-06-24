@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load widget_tweaks %}:
+{% load widget_tweaks %}
 
 {% block title %}Add Link{% endblock %}
 
@@ -10,7 +10,7 @@
       <form class="form form-horizontal" style="max-width: 500px" method="post" action="">
         {% csrf_token %}
         <fieldset>
-        <h2>Add Link</h2>
+        <h2 class="form-heading">Add Link</h2>
 
         <div class="control-group{% if form.title.errors %} error{% endif %}">
             <label class="control-label" for="id_title">{{ form.title.label }}</label>

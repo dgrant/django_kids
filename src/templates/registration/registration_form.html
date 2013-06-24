@@ -1,56 +1,66 @@
 {% extends "base.html" %}
+ 
+{% load widget_tweaks %}
 
 {% block title %}Register{% endblock %}
-
-{% block style %}
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
-
-      .form-signin {
-        max-width: 300px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
-
-    </style>
-
-{% endblock %}
 
 {% block content %}
 
     <div class="container">
 
-      {% if form.errors %}
-      <p>Encounted an error. Please try again.</p>
-      {% endif %}
+      <form class="form form-horizontal" style="max-width:500px;" method="post" action="{% url "registration_register" %}">{% csrf_token %}
+          <fieldset>
+        <h2 class="form-heading">To register, please fill in the form below:</h2>
 
-      <form class="form-signin" method="post" action="{% url "registration_register" %}">{% csrf_token %}
-        <h2 class="form-signin-heading">To register, please fill out the following form:</h2>
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
+        <div class="control-group{% if form.username.errors %} error{% endif %}">
+          <label class="control-label" for="id_username">{{ form.username.label }}</label>
+          <div class="controls">
+
+           {% render_field form.username  placeholder=form.username.label %}
+              {% if form.username.errors %}
+               <span class="help-inline">{% for error in form.username.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="control-group{% if form.email.errors %} error{% endif %}">
+          <label class="control-label" for="id_email">{{ form.email.label }}</label>
+          <div class="controls">
+
+           {% render_field form.email  placeholder=form.email.label %}
+              {% if form.email.errors %}
+               <span class="help-inline">{% for error in form.email.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="control-group{% if form.password1.errors %} error{% endif %}">
+          <label class="control-label" for="id_password1">{{ form.password1.label }}</label>
+          <div class="controls">
+
+           {% render_field form.password1  placeholder=form.password1.label %}
+              {% if form.password1.errors %}
+               <span class="help-inline">{% for error in form.password1.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="control-group{% if form.password2.errors %} error{% endif %}">
+          <label class="control-label" for="id_password2">{{ form.password2.label }}</label>
+          <div class="controls">
+
+           {% render_field form.password2  placeholder=form.password2.label %}
+              {% if form.password2.errors %}
+               <span class="help-inline">{% for error in form.password2.errors %}{{ error }}{% endfor %}</span>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-large btn-primary" type="submit">Submit</button>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}" />
+       </fieldset>
       </form>
 
     </div> <!-- /container -->
