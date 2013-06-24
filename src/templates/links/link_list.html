@@ -53,16 +53,6 @@
               </div> <!-- span -->
               <!-- END paginator -->
 
-              <!-- START new link button -->
-              {% if user.is_authenticated %}
-                <div class="row-fluid">
-                  <div class="span12">
-                      <a class="btn" href="{% url "link_add" %}">Add New Link</a>
-                  </div>
-                </div>
-              <!-- END new link button -->
-              {% endif %}
-
               <!-- START videos --->
               {% for link in link_list %}
               {% if forloop.counter0|divisibleby:"2" %}

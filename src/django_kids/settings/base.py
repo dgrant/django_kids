@@ -139,6 +139,7 @@ INSTALLED_APPS = [
     'south',
     'links',
     'registration',
+    'widget_tweaks',
 ]
 
 # A sample logging configuration. The only tangible logging

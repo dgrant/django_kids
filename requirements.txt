@@ -8,3 +8,4 @@ model_mommy==1.0
 django-debug-toolbar==0.9.4
 mock==1.0.1
 django-model-utils==1.4.0
+django-widget-tweaks==1.3

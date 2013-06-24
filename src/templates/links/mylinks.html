@@ -8,7 +8,6 @@ Here are the links you have added!
 {% block categories %}
   <ul class="nav nav-list"> 
     <li class="nav-header">Categories</li> 
-    <!--<li class="active"><a href="#">Link</a></li> -->
     {% for category in categories %}
       <li><a href="{% url "mylinks" %}category/{{category.slug}}">{{category.name}}</a></li>
     {% endfor %}
