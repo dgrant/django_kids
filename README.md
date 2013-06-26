@@ -6,7 +6,7 @@ django_kids
 
 Web application written in Django where parents can post videos and links for their children.
 
-Site is running at [https://github.com/dgrant/django_kids](https://github.com/dgrant/django_kids)
+Site is running at [http://kids.davidgrant.ca](http://kids.davidgrant.ca)
 
 Planned features
 ----------------
