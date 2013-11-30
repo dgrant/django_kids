@@ -59,7 +59,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, '..', 'static'))
+STATIC_ROOT = root('static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -204,6 +204,7 @@ CACHES = {
 HTML_MINIFY = True
 LOGIN_REDIRECT_URL="/"
 ACCOUNT_ACTIVATION_DAYS=7
+
 
 if DEBUG:
     INSTALLED_APPS += ('debug_toolbar',)
