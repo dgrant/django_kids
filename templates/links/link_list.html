@@ -61,10 +61,10 @@
               {% endif %}
                     <li class="span6">
                       <div class="thumbnail">
-                        <h2><a href="{{ link.get_url }}">{{ link.title }}</a></h2>
+                        <h2><a href="{{ link.url.get_url }}">{{ link.title }}</a></h2>
                         <p>{{ link.text }}</p>
-                {% if link.has_thumbnail %}
-                <p><a href="{{ link.get_url }}"><img width="100%" src="{{ link.thumbnail_url }}" class="img-rounded" /></a></p>
+                {% if link.url.has_thumbnail %}
+                <p><a href="{{ link.url.get_url }}"><img width="100%" src="{{ link.url.thumbnail_url }}" class="img-rounded" /></a></p>
                 {% endif %} 
                         <p><em>Added {{ link.ctime|timesince }} ago in {% for category in link.category.all %} {{category.name}}{% if forloop.last %}{% else %},{% endif %} {% endfor %}
                         </em></p>

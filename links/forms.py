@@ -1,10 +1,11 @@
-from django.forms import ModelForm, ModelMultipleChoiceField, CharField
-from .models import Link, Category
+from django import forms
+from .models import Link, Category, Url
 
-class LinkForm(ModelForm):
-    new_categories = CharField(required=False)
+class LinkForm(forms.ModelForm):
+    new_categories = forms.CharField(required=False)
+    media_type = forms.ChoiceField(required=True, choices=Url.MEDIA_TYPE)
+    media_id = forms.CharField(required=True)
 
     class Meta:
         model = Link
-        fields = ('title', 'text', 'category', 'media_type', 'media_id',
-                  'private',)
+        fields = ('title', 'text', 'category', 'private',)

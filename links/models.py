@@ -46,26 +46,14 @@ class LinkManager(models.Manager):
     def public(self):
         return self.select_related().exclude(private=True).prefetch_related('category')
 
-class Link(models.Model):
-    title = models.CharField(max_length=100)
-    text = models.TextField()
-    ctime = models.DateTimeField(auto_now_add=True)
-    mtime = models.DateTimeField(auto_now=True)
-    category = models.ManyToManyField(Category, null=True, blank=True)
+class Url(models.Model):
     MEDIA_TYPE = Choices(('youtube', 'YouTube'),
                          ('vimeo', 'Vimeo'),
                          ('url', 'URL'),
                         )
     media_type = models.CharField(max_length=50, default='youtube', choices=MEDIA_TYPE)
     media_id = models.CharField(max_length=100, default='')
-    user = models.ForeignKey(User)
     thumbnail_url = models.CharField(max_length=256, null=True, blank=True)
-    private = models.BooleanField()
-
-    objects = LinkManager()
-
-    def __unicode__(self):
-        return self.title
 
     def get_url(self):
         if self.media_type == 'youtube':
@@ -85,10 +73,23 @@ class Link(models.Model):
                 self.thumbnail_url = thumbnail.get_youtube_thumbnail(self.media_id)
             elif self.media_type == 'vimeo':
                 self.thumbnail_url = thumbnail.get_vimeo_thumbnail(self.media_id)
-        super(Link, self).save(*args, **kwargs)
+        super(Url, self).save(*args, **kwargs)
 
+
+class Link(models.Model):
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    ctime = models.DateTimeField(auto_now_add=True)
+    mtime = models.DateTimeField(auto_now=True)
+    category = models.ManyToManyField(Category, null=True, blank=True)
+    url = models.ForeignKey(Url)
+    user = models.ForeignKey(User)
+    private = models.BooleanField()
+
+    objects = LinkManager()
+
+    def __unicode__(self):
+        return self.title
 
     class Meta:
         ordering = ['-ctime']
-
-

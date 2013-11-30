@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from model_mommy import mommy
 
-from links.models import Category, Link
+from links.models import Category, Link, Url
 
 class TestBrowse(TestCase):
 
@@ -66,7 +66,7 @@ class TestBrowse(TestCase):
 class TestMyLinks(TestCase):
     def test_linklist_unauth(self):
         pass
-    
+
     def test_linklist_auth(self):
         # Auth
         authuser = User.objects.create_user('test', password='test')
@@ -165,10 +165,13 @@ class TestLinkAdd(TestCase):
         self.assertEquals(resp.status_code, 302)
         self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
         self.assertEquals([1], [link.pk for link in Link.objects.all()])
+        self.assertEquals([1], [url.pk for url in Url.objects.all()])
 
         link = Link.objects.get(pk=1)
         self.assertEquals(Category.objects.all().count(), 0)
         self.assertEquals(len(link.category.all()), 0)
+
+        url = Url.objects.get(pk=1)
 
     def test_existing_cat(self):
         authuser = User.objects.create_user('test', password='test')
