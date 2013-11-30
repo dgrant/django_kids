@@ -8,7 +8,7 @@ from django.views.generic.edit import ModelFormMixin
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 
-from .models import Link, Category
+from .models import Link, Category, Url
 from .forms import LinkForm
 
 class LinkAdd(CreateView):
@@ -17,11 +17,18 @@ class LinkAdd(CreateView):
     success_url = '/'
 
     def form_valid(self, form):
+        media_type = form.cleaned_data['media_type']
+        media_id = form.cleaned_data['media_id']
+        url, _ = Url.objects.get_or_create(media_type=media_type,
+                                           media_id=media_id)
+
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+        self.object.url = url
         self.object.save()
         form.save_m2m()
 
+        # what happens if new categories already exist?
         new_categories = form.cleaned_data['new_categories']
         new_categories = new_categories.strip()
         if new_categories != '':
