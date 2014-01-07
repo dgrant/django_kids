@@ -158,7 +158,7 @@ class TestLinkAdd(TestCase):
 
         url = reverse('link_add')
         resp = self.client.post(url, {'title': 'fake title',
-                                      'text': 'description',
+                                      'comment': 'description',
                                       'media_type': 'youtube',
                                       'media_id': '12345',
                                       'private': False})
@@ -182,7 +182,7 @@ class TestLinkAdd(TestCase):
 
         url = reverse('link_add')
         resp = self.client.post(url, {'title': 'fake title',
-                                      'text': 'description',
+                                      'comment': 'description',
                                       'media_type': 'youtube',
                                       'media_id': '12345',
                                       'private': False,
@@ -202,7 +202,7 @@ class TestLinkAdd(TestCase):
 
         url = reverse('link_add')
         resp = self.client.post(url, {'title': 'fake title',
-                                      'text': 'description',
+                                      'comment': 'description',
                                       'media_type': 'youtube',
                                       'media_id': '12345',
                                       'private': False,

@@ -6,7 +6,7 @@ class UrlAdmin(admin.ModelAdmin):
     list_display = ('media_id', 'media_type', 'thumbnail_url', )
 
 class LinkAdmin(admin.ModelAdmin):
-    fields = ('title', 'text', 'category', 'user', 'private', 'url')
+    fields = ('title', 'comment', 'category', 'user', 'private', 'url')
 
 class CategoryAdmin(admin.ModelAdmin):
     pass

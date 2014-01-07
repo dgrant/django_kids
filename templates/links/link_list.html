@@ -62,7 +62,7 @@
                     <li class="span6">
                       <div class="thumbnail">
                         <h2><a href="{{ link.url.get_url }}">{{ link.title }}</a></h2>
-                        <p>{{ link.text }}</p>
+                        <p>{{ link.comment }}</p>
                 {% if link.url.has_thumbnail %}
                 <p><a href="{{ link.url.get_url }}"><img width="100%" src="{{ link.url.thumbnail_url }}" class="img-rounded" /></a></p>
                 {% endif %} 

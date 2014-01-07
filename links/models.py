@@ -84,7 +84,7 @@ class Url(models.Model):
 
 class Link(models.Model):
     title = models.CharField(max_length=100)
-    text = models.TextField()
+    comment = models.TextField()
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
     category = models.ManyToManyField(Category, null=True, blank=True)
