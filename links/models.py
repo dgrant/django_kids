@@ -55,6 +55,12 @@ class Url(models.Model):
     media_id = models.CharField(max_length=100, default='')
     thumbnail_url = models.CharField(max_length=256, null=True, blank=True)
 
+    class Meta:
+        ordering = ['media_type', 'media_id']
+
+    def __unicode__(self):
+        return self.get_url()
+
     def get_url(self):
         if self.media_type == 'youtube':
             return 'http://www.youtube.com/v/{0}?rel=0'.format(self.media_id)

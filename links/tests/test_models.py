@@ -67,6 +67,10 @@ class UrlTest(TestCase):
     def test_invalid_media_id(self):
         url = mommy.make(Url, media_type='blather')
 
+    def test_unicode(self):
+        url = mommy.make(Url, media_type='url')
+        self.assertEquals(url.get_url(), unicode(url))
+
 class LinkTest(TestCase):
     def test_unicode(self):
         link = mommy.make('Link')
