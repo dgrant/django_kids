@@ -90,7 +90,7 @@ class Link(models.Model):
     category = models.ManyToManyField(Category, null=True, blank=True)
     url = models.ForeignKey(Url)
     user = models.ForeignKey(User)
-    private = models.BooleanField()
+    private = models.BooleanField(default=False)
 
     objects = LinkManager()
 
