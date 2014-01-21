@@ -3,9 +3,10 @@ from models import Link, Category, Url
 
 class UrlAdmin(admin.ModelAdmin):
     fields = ('media_type', 'media_id',)
+    list_display = ('media_id', 'media_type', 'thumbnail_url', )
 
 class LinkAdmin(admin.ModelAdmin):
-    fields = ('title', 'text', 'category', 'user', 'private',)
+    fields = ('title', 'comment', 'category', 'user', 'private', 'url')
 
 class CategoryAdmin(admin.ModelAdmin):
     pass

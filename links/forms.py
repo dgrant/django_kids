@@ -8,4 +8,4 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ('title', 'text', 'category', 'private',)
+        fields = ('title', 'comment', 'category', 'private',)
