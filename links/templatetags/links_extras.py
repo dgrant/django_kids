@@ -4,4 +4,7 @@ register = template.Library()
 
 @register.filter
 def startswith(value, arg):
-    return value.startswith(arg)
+    if value == None:
+        return False
+    else:
+        return value.startswith(arg)
