@@ -14,6 +14,13 @@ from model_utils import Choices
 
 thumbnail_url_cache = {}
 
+class MagicToken(models.Model):
+    user = models.OneToOneField(User)
+    magictoken = models.CharField(max_length=128, unique=True)
+
+    def __unicode__(self):
+        return unicode(self.user)
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)

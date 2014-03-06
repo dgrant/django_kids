@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from links.views import LinkList, Browse, LinkAdd
+from links.views import LinkList, Browse, LinkAdd, MagicTokenLogin
 
 urlpatterns = patterns('',
     url(r'^mylinks/$', LinkList.as_view(), name='mylinks'),
@@ -10,4 +10,6 @@ urlpatterns = patterns('',
 
     url(r'^browse/$', Browse.as_view(), name='browse'),
     url(r'^browse/category/(?P<category_slug>\S+)/$', Browse.as_view(), name='browse_category'),
+
+    url(r'^magictokenlogin/([0-9a-zA-Z]+)/$', MagicTokenLogin.as_view(), name='magic_token_login'),
 )

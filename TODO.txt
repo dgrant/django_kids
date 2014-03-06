@@ -1,3 +1,3 @@
--DONE: Bring over bootstrap stuff from kids.davidgrant.ca
 -Get caching working
 -Expire entries in the thumbnail url cache over time
+-Move title to url

@@ -77,3 +77,8 @@ class LinkTest(TestCase):
         self.assertEquals(unicode(link), link.title)
 
 
+class MagicTokenTest(TestCase):
+    def test_create(self):
+        token='adkjupup1343'
+        magictoken_obj = mommy.make('MagicToken', magictoken=token)
+        self.assertEquals(magictoken_obj.magictoken, token)
