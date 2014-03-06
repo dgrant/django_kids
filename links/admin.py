@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Link, Category, Url
+from .models import *
 
 class UrlAdmin(admin.ModelAdmin):
     fields = ('media_type', 'media_id',)
@@ -11,6 +11,10 @@ class LinkAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+class MagicTokenAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Url, UrlAdmin)
 admin.site.register(Link, LinkAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(MagicToken, MagicTokenAdmin)

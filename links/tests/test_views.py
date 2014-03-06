@@ -6,6 +6,22 @@ from model_mommy import mommy
 
 from links.models import Category, Link, Url
 
+class TestMagicTokenLogin(TestCase):
+    def test_magic_token_auth_success(self):
+        authuser = User.objects.create_user('test', password='test')
+        myuser = mommy.make('MagicToken', magictoken='abc', user=authuser)
+
+        url = reverse('magic_token_login', args=['abc'])
+        resp = self.client.get(url)
+        self.assertTrue(len(resp.cookies.items()) > 0)
+        self.assertRedirects(resp, 'http://testserver/links/mylinks/')
+
+    def test_magic_token_auth_failure(self):
+        url = reverse('magic_token_login', args=['abc'])
+        resp = self.client.get(url)
+        self.assertTrue(len(resp.cookies.items()) == 0)
+        self.assertEquals(resp.status_code, 404)
+
 class TestBrowse(TestCase):
 
     def test_non_auth(self):

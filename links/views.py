@@ -1,15 +1,32 @@
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render
 from django.views.generic import ListView, CreateView, TemplateView
+from django.views.generic.base import View
 from django.views.generic.edit import ModelFormMixin
 from django.db.models import Q
 from django.core.urlresolvers import reverse
+from django.contrib.auth import login
 
-from .models import Link, Category, Url
+from .models import *
 from .forms import LinkForm
+
+class MagicTokenLogin(View):
+    def get(self, request, token):
+        try:
+            magic_token_obj = MagicToken.objects.get(magictoken=token)
+        except MagicToken.DoesNotExist:
+            raise Http404
+
+        user = magic_token_obj.user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('mylinks'))
+        else:
+            return HttpResponseRedirect(reverse('browse'))
 
 class LinkAdd(CreateView):
     model = Link
