@@ -1,7 +1,8 @@
 *.pyc
 env
 env.bak
-static
 django_kids.pid
 .coverage
 *.swp
+/django_kids/settings/production.py
+/static/*
