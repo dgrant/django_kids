@@ -39,7 +39,7 @@ class LinkAdd(CreateView):
                 cat.name = new_cat.strip()
                 cat.save()
                 cats.append(cat)
-            self.object.category.add(*cats) 
+            self.object.category.add(*cats)
 
         return super(ModelFormMixin, self).form_valid(form)
 
