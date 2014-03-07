@@ -12,12 +12,12 @@ def update():
         run('git pull')
 
 def schema():
-    with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_recipes.settings.production'):
+    with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_kids.settings.production'):
         run('env/bin/python ./manage.py migrate links')
 
 def backupdb():
     with cd(ROOT):
-        run('./backupLocalDB.sh recipes_kids')
+        run('./backupLocalDB.sh django_kids')
 
 def static():
     with cd(ROOT):
