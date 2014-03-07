@@ -73,9 +73,9 @@ class UrlTest(TestCase):
 
 class LinkTest(TestCase):
     def test_unicode(self):
+        url = mommy.make('Url', media_id='123')
         link = mommy.make('Link')
-        self.assertEquals(unicode(link), link.title)
-
+        self.assertEquals(unicode(link), link.title + ', ' + unicode(link.url))
 
 class MagicTokenTest(TestCase):
     def test_create(self):

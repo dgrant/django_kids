@@ -25,9 +25,12 @@ class TestMagicTokenLogin(TestCase):
 class TestBrowse(TestCase):
 
     def test_non_auth(self):
-        mommy.make('Link', private=False) #1
-        mommy.make('Link', private=True)  #2
-        mommy.make('Link', private=False) #3
+        u1 = mommy.make('Url')
+        u2 = mommy.make('Url')
+        u3 = mommy.make('Url')
+        mommy.make('Link', private=False, url=u1)
+        mommy.make('Link', private=True, url=u2)
+        mommy.make('Link', private=False, url=u2)
 
         url = reverse('browse')
         resp = self.client.get(url)
