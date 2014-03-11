@@ -41,8 +41,7 @@ class Category(models.Model):
     def get_mylinks_url(self):
         return reverse('mylinks_category', kwargs={'category_slug': self.slug})
 
-
-class LinkManager(models.Manager):
+class UrlManager(models.Manager):
 
     def owned_by(self, user):
         return self.select_related().filter(user=user).prefetch_related('category')
@@ -88,6 +87,15 @@ class Url(models.Model):
                 self.thumbnail_url = thumbnail.get_vimeo_thumbnail(self.media_id)
         super(Url, self).save(*args, **kwargs)
 
+class LinkManager(models.Manager):
+    def owned_by(self, user):
+        return self.select_related().filter(user=user).prefetch_related('category')
+
+    def public_not_owned_by(self, user):
+        return self.select_related().exclude(user=user).exclude(private=True).prefetch_related('category')
+
+    def public(self):
+        return self.select_related().exclude(private=True).prefetch_related('category')
 
 class Link(models.Model):
     title = models.CharField(max_length=100)
@@ -95,14 +103,14 @@ class Link(models.Model):
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
     category = models.ManyToManyField(Category, null=True, blank=True)
-    url = models.ForeignKey(Url)
+    url = models.ForeignKey(Url, related_name='links')
     user = models.ForeignKey(User)
     private = models.BooleanField(default=False)
 
     objects = LinkManager()
 
     def __unicode__(self):
-        return self.title
+        return self.title + ', ' + unicode(self.url)
 
     class Meta:
         ordering = ['-ctime']

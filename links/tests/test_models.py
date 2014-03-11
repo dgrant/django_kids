@@ -71,6 +71,71 @@ class UrlTest(TestCase):
         url = mommy.make(Url, media_type='url')
         self.assertEquals(url.get_url(), unicode(url))
 
+class UrlManagerTest(TestCase):
+    def test_getall(self):
+        num_urls = 10
+        ids = range(1, num_urls+1)
+        for i in ids:
+            mommy.make('Url')
+        with self.assertNumQueries(1):
+            self.assertEquals(set(ids), set([x.pk for x in Url.objects.all()]))
+
+class LinkManagerTest(TestCase):
+    def setUp(self):
+        self.num_links_per_user = 10
+        self.actual_ids = range(1, 2 * self.num_links_per_user + 1)
+        self.user1 = mommy.make('User')
+        self.user2 = mommy.make('User')
+        for user in (self.user1, self.user2):
+            for i in range(1, self.num_links_per_user + 1):
+                cat = mommy.make('Category')
+                isprivate = i % 2 == 0
+                link = mommy.make('Link', private=isprivate, user=user)
+                link.category.add(cat)
+                link.save()
+
+    def test_public(self):
+        """
+        Should be one query to prefetch categories
+        and one query to get links
+        """
+        with self.assertNumQueries(2):
+            ids = set()
+            data = []
+            for x in Link.objects.public():
+                ids.add(x.pk)
+                data.append((x.url, x.category.all(), x.user))
+            self.assertEquals(set([x for x in self.actual_ids if (x % 2 == 1)]), ids)
+
+    def test_public_not_owned_by(self):
+        """
+        Should be one query to prefetch categories
+        and one query to get links
+        """
+        with self.assertNumQueries(2):
+            ids = set()
+            data = []
+            for x in Link.objects.public_not_owned_by(self.user2):
+                ids.add(x.pk)
+                data.append((x.url, x.category.all()))
+            # should only get user1's public links, so links from 1 to num_links_per_user
+            self.assertEquals(set([x for x in self.actual_ids if (x % 2 == 1 and x <= self.num_links_per_user)]), ids)
+
+    def test_owned_by(self):
+        """
+        Should be one query to prefetch categories
+        and one query to get links
+        """
+        with self.assertNumQueries(2):
+            ids = set()
+            data = []
+            for x in Link.objects.owned_by(self.user2):
+                ids.add(x.pk)
+                data.append((x.url, x.category.all()))
+            # should only get user1's links, so links from num_links_per_user + 1 to num_links_per_user * 2
+            self.assertEquals(set([x for x in self.actual_ids if (self.num_links_per_user + 1 <= x <= self.num_links_per_user * 2)]), ids)
+
+
 class LinkTest(TestCase):
     def test_unicode(self):
         link = mommy.make('Link')
