@@ -138,9 +138,9 @@ class LinkManagerTest(TestCase):
 
 class LinkTest(TestCase):
     def test_unicode(self):
-        link = mommy.make('Link')
-        self.assertEquals(unicode(link), link.title)
-
+        url = mommy.make('Url')
+        link = mommy.make('Link', url=url)
+        self.assertEquals(unicode(link), link.title + ', ' + unicode(url))
 
 class MagicTokenTest(TestCase):
     def test_create(self):
