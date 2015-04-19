@@ -102,7 +102,7 @@ class Link(models.Model):
     objects = LinkManager()
 
     def __unicode__(self):
-        return self.title
+        return self.title + ', ' + unicode(self.url)
 
     class Meta:
         ordering = ['-ctime']
