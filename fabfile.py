@@ -1,6 +1,9 @@
 from fabric.api import run, env, cd, shell_env, execute
 
-env.hosts = ['slice:55555']
+from fabric.network import ssh
+ssh.util.log_to_file("paramiko.log", 10)
+env.hosts = ['linode']
+env.use_ssh_config = True
 ROOT='/home/david/public_html/django/django_kids/public'
 
 def restart():
@@ -9,15 +12,15 @@ def restart():
 
 def update():
     with cd(ROOT):
-        run('git pull')
+        run('git pull --rebase')
 
 def schema():
     with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_kids.settings.production'):
-        run('env/bin/python ./manage.py migrate links')
+        run('env/bin/python ./manage.py migrate')
 
 def backupdb():
     with cd(ROOT):
-        run('./backupLocalDB.sh django_kids')
+        run('./backupLocalDB.sh kids_django')
 
 def static():
     with cd(ROOT):
