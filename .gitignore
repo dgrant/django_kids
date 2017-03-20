@@ -7,5 +7,4 @@ django_kids.pid
 /django_kids/settings/production.py
 /static/*
 *.bak
-/backups
 *.log
