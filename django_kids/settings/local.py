@@ -1,7 +1,8 @@
 from .base import *
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
@@ -11,6 +12,9 @@ DATABASES = {
         'PASSWORD': 'django_kids',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

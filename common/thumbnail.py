@@ -2,11 +2,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-import urllib2
-from urllib2 import HTTPError
+import urllib.request, urllib.error, urllib.parse
+from urllib.error import HTTPError
 
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 def get_youtube_thumbnail(id):
     return 'http://img.youtube.com/vi/{0}/0.jpg'.format(id)
@@ -23,7 +23,7 @@ def get_vimeo_thumbnail(id):
 
 def read_from_url(url): # pragma: no cover
     try:
-        return urllib2.urlopen(url).read()
+        return urllib.request.urlopen(url).read()
     except HTTPError:
         trace = sys.exc_info()[2]
-        raise Exception("Failed to fetch url: {0}".format(url)), None, trace
+        raise Exception("Failed to fetch url: {0}".format(url)).with_traceback(trace)

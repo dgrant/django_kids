@@ -78,7 +78,7 @@ class LinkList(ListView):
 
     def get_queryset(self):
         qs = Link.objects.owned_by(self.request.user)
-        if self.kwargs.has_key('category_slug'):
+        if 'category_slug' in self.kwargs:
             category_slug = self.kwargs['category_slug']
             qs = qs.filter(category__slug=category_slug)
         return qs
@@ -113,7 +113,7 @@ class Browse(ListView):
         else:
             # Not authenticated, show all links except private ones
             qs = Link.objects.public()
-        if self.kwargs.has_key('category_slug'):
+        if 'category_slug' in self.kwargs:
             category_slug = self.kwargs['category_slug']
             qs = qs.filter(category__slug=category_slug)
         return qs

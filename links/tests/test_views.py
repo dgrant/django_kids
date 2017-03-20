@@ -13,14 +13,14 @@ class TestMagicTokenLogin(TestCase):
 
         url = reverse('magic_token_login', args=['abc'])
         resp = self.client.get(url)
-        self.assertTrue(len(resp.cookies.items()) > 0)
+        self.assertTrue(len(list(resp.cookies.items())) > 0)
         self.assertRedirects(resp, 'http://testserver/links/mylinks/')
 
     def test_magic_token_auth_failure(self):
         url = reverse('magic_token_login', args=['abc'])
         resp = self.client.get(url)
-        self.assertTrue(len(resp.cookies.items()) == 0)
-        self.assertEquals(resp.status_code, 404)
+        self.assertTrue(len(list(resp.cookies.items())) == 0)
+        self.assertEqual(resp.status_code, 404)
 
 class TestBrowse(TestCase):
 
@@ -31,11 +31,11 @@ class TestBrowse(TestCase):
 
         url = reverse('browse')
         resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
 
-        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+        self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1, 3]))
 
     def test_auth(self):
@@ -50,11 +50,11 @@ class TestBrowse(TestCase):
 
         url = reverse('browse')
         resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
         self.assertNotIn('Login', resp.content)
-        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+        self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1, 3]))
 
     def test_category_filter(self):
@@ -71,11 +71,11 @@ class TestBrowse(TestCase):
 
         url = reverse('browse_category', kwargs={'category_slug': cat1.slug})
         resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
 
-        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+        self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1]))
 
 
@@ -107,14 +107,14 @@ class TestMyLinks(TestCase):
         # do GET
         url = reverse('mylinks')
         resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
 
         # Check the list of categories is correct
         self.assertIn('categories', resp.context)
-        self.assertEquals([cat1.name], [c.name for c in resp.context['categories']])
+        self.assertEqual([cat1.name], [c.name for c in resp.context['categories']])
         # Check the list of links is correct
         self.assertIn('link_list', resp.context)
-        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+        self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1, 2]))
 
     def test_linklist_auth_category_filtering(self):
@@ -138,10 +138,10 @@ class TestMyLinks(TestCase):
         url = reverse('mylinks_category', kwargs={'category_slug': cat1.slug})
 
         resp = self.client.get(url)
-        self.assertEquals(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
-        self.assertEquals(set([link.pk for link in resp.context['link_list']]),
+        self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1]))
 
     def test_linklist_noauth(self):
@@ -178,14 +178,14 @@ class TestLinkAdd(TestCase):
                                       'media_type': 'youtube',
                                       'media_id': '12345',
                                       'private': False})
-        self.assertEquals(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 302)
         self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
-        self.assertEquals([1], [link.pk for link in Link.objects.all()])
-        self.assertEquals([1], [url.pk for url in Url.objects.all()])
+        self.assertEqual([1], [link.pk for link in Link.objects.all()])
+        self.assertEqual([1], [url.pk for url in Url.objects.all()])
 
         link = Link.objects.get(pk=1)
-        self.assertEquals(Category.objects.all().count(), 0)
-        self.assertEquals(len(link.category.all()), 0)
+        self.assertEqual(Category.objects.all().count(), 0)
+        self.assertEqual(len(link.category.all()), 0)
 
         url = Url.objects.get(pk=1)
 
@@ -203,13 +203,13 @@ class TestLinkAdd(TestCase):
                                       'media_id': '12345',
                                       'private': False,
                                       'category': (cat.pk,)})
-        self.assertEquals(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 302)
         self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
-        self.assertEquals([1], [link.pk for link in Link.objects.all()])
+        self.assertEqual([1], [link.pk for link in Link.objects.all()])
 
         link = Link.objects.get(pk=1)
-        self.assertEquals(Category.objects.all().count(), 1)
-        self.assertEquals(len(link.category.all()), 1)
+        self.assertEqual(Category.objects.all().count(), 1)
+        self.assertEqual(len(link.category.all()), 1)
 
     def test_new_cat(self):
         authuser = User.objects.create_user('test', password='test')
@@ -223,11 +223,11 @@ class TestLinkAdd(TestCase):
                                       'media_id': '12345',
                                       'private': False,
                                       'new_categories': 'cat1, cat2'})
-        self.assertEquals(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 302)
         self.assertRedirects(resp, 'http://testserver/', target_status_code=302)
-        self.assertEquals([1], [link.pk for link in Link.objects.all()])
+        self.assertEqual([1], [link.pk for link in Link.objects.all()])
 
         link = Link.objects.get(pk=1)
 
-        self.assertEquals(Category.objects.all().count(), 2)
-        self.assertEquals(len(link.category.all()), 2)
+        self.assertEqual(Category.objects.all().count(), 2)
+        self.assertEqual(len(link.category.all()), 2)

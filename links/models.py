@@ -1,13 +1,12 @@
 from django.db import models
-import urllib2
-from urllib2 import HTTPError
+import urllib.request, urllib.error, urllib.parse
+from urllib.error import HTTPError
 import json
 
 from common import thumbnail
 
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
-from django.utils import unittest
 from django.core.urlresolvers import reverse
 
 from model_utils import Choices
@@ -19,7 +18,7 @@ class MagicToken(models.Model):
     magictoken = models.CharField(max_length=128, unique=True)
 
     def __unicode__(self):
-        return unicode(self.user)
+        return str(self.user)
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -110,7 +109,7 @@ class Link(models.Model):
     objects = LinkManager()
 
     def __unicode__(self):
-        return self.title + ', ' + unicode(self.url)
+        return self.title + ', ' + str(self.url)
 
     class Meta:
         ordering = ['-ctime']
