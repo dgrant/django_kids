@@ -9,7 +9,7 @@ import json
 import urllib.request, urllib.error, urllib.parse
 
 def get_youtube_thumbnail(id):
-    return 'http://img.youtube.com/vi/{0}/0.jpg'.format(id)
+    return 'https://img.youtube.com/vi/{0}/0.jpg'.format(id)
 
 def get_vimeo_thumbnail(id):
     url = 'http://vimeo.com/api/v2/video/{0}.json'.format(id)

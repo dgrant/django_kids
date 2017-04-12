@@ -68,7 +68,7 @@ class Url(models.Model):
 
     def get_url(self):
         if self.media_type == 'youtube':
-            return 'http://www.youtube.com/v/{0}?rel=0'.format(self.media_id)
+            return 'https://www.youtube.com/v/{0}?rel=0'.format(self.media_id)
         elif self.media_type == 'vimeo':
             return 'http://vimeo.com/moogaloop.swf?clip_id={0}'.format(self.media_id)
         elif self.media_type == 'url':
