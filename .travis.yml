@@ -3,7 +3,7 @@ python:
   - "2.7"
 install:
   - pip install -r requirements.txt --use-mirrors
-  - pip install coveralls --use-mirrors
+  - pip install coveralls
 script:
   - coverage run ./manage.py test --settings=django_kids.settings.test
 after_success:
