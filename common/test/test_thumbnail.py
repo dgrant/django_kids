@@ -6,7 +6,7 @@ from mock import patch
 
 class ThumbnailTest(TestCase):
     def test_get_youtube_thumbnail(self):
-        self.assertEqual(thumbnail.get_youtube_thumbnail('1234'), 'http://img.youtube.com/vi/1234/0.jpg')
+        self.assertEqual(thumbnail.get_youtube_thumbnail('1234'), 'https://img.youtube.com/vi/1234/0.jpg')
 
     @patch('common.thumbnail.read_from_url')
     def test_get_vimeo_thumbnail(self, readurl_mock):

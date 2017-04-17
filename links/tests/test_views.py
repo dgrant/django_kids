@@ -53,7 +53,7 @@ class TestBrowse(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn('categories', resp.context)
         self.assertIn('link_list', resp.context)
-        self.assertNotIn('Login', resp.content)
+        self.assertNotIn('Login', resp.content.decode())
         self.assertEqual(set([link.pk for link in resp.context['link_list']]),
                           set([1, 3]))
 

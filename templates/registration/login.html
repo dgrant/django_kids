@@ -10,7 +10,7 @@
       <p>Your username and password didn't match. Please try again.</p>
       {% endif %}
 
-      <form class="form" style="max-width:300px;" method="post" action="{% url "django.contrib.auth.views.login" %}">
+      <form class="form" style="max-width:300px;" method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <h2 class="form-heading">Please sign in</h2>
         <input type="text" class="input-block-level" name="username" id="id_username" placeholder="Username"/>

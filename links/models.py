@@ -17,7 +17,7 @@ class MagicToken(models.Model):
     user = models.OneToOneField(User)
     magictoken = models.CharField(max_length=128, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.user)
 
 class Category(models.Model):
@@ -28,7 +28,7 @@ class Category(models.Model):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -63,14 +63,14 @@ class Url(models.Model):
     class Meta:
         ordering = ['media_type', 'media_id']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_url()
 
     def get_url(self):
         if self.media_type == 'youtube':
             return 'https://www.youtube.com/v/{0}?rel=0'.format(self.media_id)
         elif self.media_type == 'vimeo':
-            return 'http://vimeo.com/moogaloop.swf?clip_id={0}'.format(self.media_id)
+            return 'https://vimeo.com/moogaloop.swf?clip_id={0}'.format(self.media_id)
         elif self.media_type == 'url':
             return self.media_id
 
@@ -108,7 +108,7 @@ class Link(models.Model):
 
     objects = LinkManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title + ', ' + str(self.url)
 
     class Meta:

@@ -108,7 +108,7 @@
             <div class="pull-right">
               <ul class="nav">
                   {% if user.is_authenticated %}
-                  <li><a href="{% url "django.contrib.auth.views.logout" %}">Logout {{ user.username }}</a></li>
+                  <li><a href="{% url 'logout' %}">Logout {{ user.username }}</a></li>
                   {% else %}
                   {% url "django.contrib.auth.views.login" as login %}
                   <li {% if request.path|startswith:login %}class="active"{% endif %}><a href="{{ login }}">Login</a></li>
