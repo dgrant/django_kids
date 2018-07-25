@@ -1,4 +1,4 @@
-from fabric.api import run, env, cd, shell_env, execute
+from fabric.api import run, env, cd, shell_env, execute, sudo
 
 from fabric.network import ssh
 ssh.util.log_to_file("paramiko.log", 10)
@@ -8,7 +8,7 @@ ROOT='/home/david/public_html/django/django_kids/public'
 
 def restart():
     with cd(ROOT):
-        run('touch ../../django_kids.ini')
+        sudo('touch /etc/uwsgi/apps-available/django_kids.ini')
 
 def update():
     with cd(ROOT):
