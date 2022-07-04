@@ -1,4 +1,4 @@
-Django==1.10.6
+Django==3.2.14
 mysqlclient==1.4.4
 South==0.8.4
 django-registration==2.2
